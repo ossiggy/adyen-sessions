@@ -4,8 +4,6 @@ import { CLIENT_KEY, ENVIRONMENT } from '../config';
 
 export const useCheckout = (sessionId, sessionData, redirectResult) => {
   console.log('using checkout');
-  const [error, setError] = useState(null);
-  const [result, setResult] = useState(null);
   const [checkout, setCheckout] = useState(null);
 
   useEffect(() => {
@@ -18,11 +16,9 @@ export const useCheckout = (sessionId, sessionData, redirectResult) => {
       },
       onPaymentCompleted: (result, component) => {
           console.info(result, component);
-          setResult(result);
       },
       onError: (error, component) => {
           console.error(error.name, error.message, error.stack, component);
-          setError(error);
       }
     };
     const initializeCheckout = async config => {
@@ -38,5 +34,5 @@ export const useCheckout = (sessionId, sessionData, redirectResult) => {
     initializeCheckout(configuration);
   }, [sessionId, sessionData, redirectResult]);
 
-  return [checkout, result, error];
+  return [checkout];
 };

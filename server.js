@@ -33,7 +33,6 @@ app.post('/startSession', express.json(), async (req, res) => {
     };
 
     const result = await request(options);
-    console.log(result);
     res.json(result);
   } catch (err) {
     console.log(err.message);

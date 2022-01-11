@@ -16,8 +16,10 @@ const Dropin = ({ sessionId, sessionData, redirectInfo, setRedirectInfo }) => {
 
   if (!!search && !redirectInfo) {
     const { redirectResult } = JSON.parse('{"' + search.replace(/&/g, '","').replace(/=/g,'":"') + '"}', function(key, value) { return key===""?value:decodeURIComponent(value) });
+    console.log('handling redirect', redirectResult);
     setRedirectInfo(redirectResult);
   }  else if (checkout) {
+    console.log('mounting dropin');
     checkout.create('dropin').mount('#checkout');
   }
 
