@@ -2,8 +2,7 @@ import { useState, useEffect } from 'react';
 import AdyenCheckout from '@adyen/adyen-web';
 import { CLIENT_KEY, ENVIRONMENT } from '../config';
 
-export const useCheckout = (sessionId, sessionData, redirectResult) => {
-  console.log('using checkout');
+export const useSubmitDetails = (sessionId, redirectResult) => {
   const [error, setError] = useState(null);
   const [result, setResult] = useState(null);
   const [checkout, setCheckout] = useState(null);
@@ -14,10 +13,9 @@ export const useCheckout = (sessionId, sessionData, redirectResult) => {
       clientKey: CLIENT_KEY, // Public key used for client-side authentication: https://docs.adyen.com/development-resources/client-side-authentication
       session: {
         id: sessionId, // Unique identifier for the payment session.
-        sessionData, // The payment session data.
       },
       onPaymentCompleted: (result, component) => {
-          console.info(result, component);
+          console.info(result, result.pspReference);
           setResult(result);
       },
       onError: (error, component) => {
@@ -25,18 +23,16 @@ export const useCheckout = (sessionId, sessionData, redirectResult) => {
           setError(error);
       }
     };
-    const initializeCheckout = async config => {
+
+    const submitAdditionalDetails = async config => {
       const component = await new AdyenCheckout(config);
-      if (redirectResult) {
-        console.log('redirectResult found', redirectResult)
-        component.submitDetails({ details: { redirectResult } });
-      };
-      console.log(component);
+      component.submitDetails({ details: { redirectResult } });
+      console.info('here', component);
       setCheckout(component);
     };
 
-    initializeCheckout(configuration);
-  }, [sessionId, sessionData, redirectResult]);
+    submitAdditionalDetails(configuration);
+  }, [sessionId, redirectResult]);
 
   return [checkout, result, error];
 };

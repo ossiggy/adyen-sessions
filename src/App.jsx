@@ -3,7 +3,11 @@ import { Container, Row, Col, Jumbotron } from 'reactstrap';
 import { Header, Initialize, PaymentsForm} from './components';
 
 const App = () => {
-  const [options, setOptions] = useState({});
+  const [options, setOptions] = useState({
+    value: 25,
+    currency: "EUR",
+    countryCode: "NL"
+  });
 
   const handleSubmit = (e, formData) => {
     e.preventDefault();
